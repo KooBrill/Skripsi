@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - honeypot-logs:/var/log/nginx/shared
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    restart: unless-stopped
+    # Port 80 tidak diekspos manual — sudah diurus Traefik milik Dokploy
+
+  python-analyzer:
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    volumes:
+      - honeypot-logs:/var/log/nginx/shared
+      - analyzer-db:/app/db
+    restart: unless-stopped
+    # Environment variable diisi langsung di dashboard Dokploy
+    # Jangan pernah tulis nilai sensitif di sini
+    environment:
+      - N8N_WEBHOOK_URL
+      - WEBHOOK_SECRET
+
+volumes:
+  honeypot-logs:
+  analyzer-db:
