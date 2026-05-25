@@ -20,8 +20,8 @@ services:
     # Environment variable diisi langsung di dashboard Dokploy
     # Jangan pernah tulis nilai sensitif di sini
     environment:
-      - N8N_WEBHOOK_URL
-      - WEBHOOK_SECRET
+      - N8N_WEBHOOK_URL=${N8N_WEBHOOK_URL}
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET}
 
 volumes:
   honeypot-logs:
